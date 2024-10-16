@@ -3,11 +3,21 @@ from openai import OpenAI
 import requests
 import os
 import re
-import re
+import redis
+from datetime import timedelta
 
 
 app = Flask(__name__)
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+
+# Connect to Redis
+redis_url = os.getenv('REDIS_URL')
+redis_client = redis.Redis.from_url(redis_url)
+
+# Maximum requests allowed per IP per day
+MAX_REQUESTS = 6
+EXPIRY_TIME = timedelta(days=1)
 
 
 @app.route('/')
@@ -51,7 +61,22 @@ def simplify_links(text):
 def get_response():
     user_input = request.form['user_input']
 
+    user_ip = request.remote_addr  # Get the user's IP address
+
+    # Check if the user has exceeded the request limit
+    current_usage = redis_client.get(user_ip)
+
+    if current_usage:
+        current_usage = int(current_usage)
+        if current_usage >= MAX_REQUESTS:
+            return jsonify({'response': 'Daily limit of 6 questions reached. Please try again tomorrow.', 'audio_url':''}), 429
+    else:
+        # First request from this IP; set it to 1 and expire after 24 hours
+        redis_client.set(user_ip, 1, ex=EXPIRY_TIME)
+
     try:
+        redis_client.incr(user_ip)
+
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
