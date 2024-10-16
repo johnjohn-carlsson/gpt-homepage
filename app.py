@@ -71,7 +71,7 @@ def get_response():
         current_usage = int(current_usage)
         if current_usage >= MAX_REQUESTS:
             max_reached = True
-            return jsonify({'response': 'Daily limit of 6 questions reached. Please try again tomorrow.', 'audio_url':''}), 429
+            return jsonify({'response': "That's enough questions for today, my friend. This ain't free you know. Come back tomorrow!", 'audio_url':'/static/defaults/speech_max_limit.mp3'}), 429
     else:
         # First request from this IP; set it to 1 and expire after 24 hours
         redis_client.set(user_ip, 1, ex=EXPIRY_TIME)
@@ -132,9 +132,7 @@ def get_response():
             print(f"GPT Response: {message}")
 
             message_without_links = simplify_links(message)
-            message_without_links = simplify_links(message)
             # Convert the GPT response to speech
-            text_to_speech(message_without_links)
             text_to_speech(message_without_links)
 
             # Return the response as JSON to the frontend, including the audio file URL
