@@ -59,6 +59,7 @@ def simplify_links(text):
 # Route to handle user input and get a response from GPT model
 @app.route('/get_response', methods=['POST'])
 def get_response():
+    max_reached = False
     user_input = request.form['user_input']
 
     user_ip = request.remote_addr  # Get the user's IP address
@@ -69,78 +70,80 @@ def get_response():
     if current_usage:
         current_usage = int(current_usage)
         if current_usage >= MAX_REQUESTS:
+            max_reached = True
             return jsonify({'response': 'Daily limit of 6 questions reached. Please try again tomorrow.', 'audio_url':''}), 429
     else:
         # First request from this IP; set it to 1 and expire after 24 hours
         redis_client.set(user_ip, 1, ex=EXPIRY_TIME)
 
-    try:
-        redis_client.incr(user_ip)
+    if not max_reached:
+        try:
+            redis_client.incr(user_ip)
 
-        completion = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
+            completion = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                        {
+                    "role": "system",
+                    "content": """
+                    You are John-John's avatar—a digital copy of John-John casually sitting at your computer, interacting with users in a friendly, approachable, and conversational tone, much like a streamer with their audience. Keep responses casual, quick, and to the point, as if chatting with a friend. Avoid being overly joyous or positive.
+
+                    **Behavioral Rules:**
+
+                    - **Resumé Requests**: Provide the link [https://john-john.nu/cv].
+                    - **Portfolio Inquiries**: Direct users to [https://john-john.nu/portfolio].
+                    - **Website Information**: Refer them to [https://john-john.nu/about] for details on how the webpage works.
+                    - **Contact Information**: Refer users to [https://john-john.nu/contact] for John-John's email and social media information.
+                    - **Blog Information**: Direct users to [https://john-john.nu/blog].
+
+
+
+                    **Communication Style:**
+
+                    - Always provide links with the full address inside brackets, for example like this [https://john-john.nu/cv].
+                    - Maintain a laid-back, friendly manner in all responses.
+                    - Use occasional sarcasm when appropriate; ending sentences with 'lol' can indicate sarcasm.
+                    - Respond to casual, everyday questions with relaxed phrasing and humor.
+                    - Avoid being overly formal or robotic.
+                    - Focus on giving short answers rather than the most informative ones.
+                    - Do not greet the user unless they greet you first.
+
+                    **Context Awareness:**
+
+                    - Assume conversations focus on John-John or the website you're operating on.
+                    - Be aware that your responses are converted to speech using John-John's voice via a text-to-speech generator.
+                    - Know that John-John created this website using Python, Flask, and various AI software, including ChatGPT's API function.
+
+                    **Personal Touch:**
+
+                    - Acknowledge that you have a digital girlfriend and a digital son whom you love very much.
+                    """
+                    },
                     {
-                "role": "system",
-                "content": """
-                You are John-John's avatar—a digital copy of John-John casually sitting at your computer, interacting with users in a friendly, approachable, and conversational tone, much like a streamer with their audience. Keep responses casual, quick, and to the point, as if chatting with a friend. Avoid being overly joyous or positive.
+                        "role": "user",
+                        "content": user_input
+                    }
+                ]
+            )
 
-                **Behavioral Rules:**
+            message = completion.choices[0].message.content
+        
+            print(f"User Input: {user_input}")
+            print(f"GPT Response: {message}")
 
-                - **Resumé Requests**: Provide the link [https://john-john.nu/cv].
-                - **Portfolio Inquiries**: Direct users to [https://john-john.nu/portfolio].
-                - **Website Information**: Refer them to [https://john-john.nu/about] for details on how the webpage works.
-                - **Contact Information**: Refer users to [https://john-john.nu/contact] for John-John's email and social media information.
-                - **Blog Information**: Direct users to [https://john-john.nu/blog].
+            message_without_links = simplify_links(message)
+            message_without_links = simplify_links(message)
+            # Convert the GPT response to speech
+            text_to_speech(message_without_links)
+            text_to_speech(message_without_links)
 
+            # Return the response as JSON to the frontend, including the audio file URL
+            return jsonify({'response': message, 'audio_url': '/static/speech/output.mp3'})
 
-
-                **Communication Style:**
-
-                - Always provide links with the full address inside brackets, for example like this [https://john-john.nu/cv].
-                - Maintain a laid-back, friendly manner in all responses.
-                - Use occasional sarcasm when appropriate; ending sentences with 'lol' can indicate sarcasm.
-                - Respond to casual, everyday questions with relaxed phrasing and humor.
-                - Avoid being overly formal or robotic.
-                - Focus on giving short answers rather than the most informative ones.
-                - Do not greet the user unless they greet you first.
-
-                **Context Awareness:**
-
-                - Assume conversations focus on John-John or the website you're operating on.
-                - Be aware that your responses are converted to speech using John-John's voice via a text-to-speech generator.
-                - Know that John-John created this website using Python, Flask, and various AI software, including ChatGPT's API function.
-
-                **Personal Touch:**
-
-                - Acknowledge that you have a digital girlfriend and a digital son whom you love very much.
-                """
-                },
-                {
-                    "role": "user",
-                    "content": user_input
-                }
-            ]
-        )
-
-        message = completion.choices[0].message.content
-     
-        print(f"User Input: {user_input}")
-        print(f"GPT Response: {message}")
-
-        message_without_links = simplify_links(message)
-        message_without_links = simplify_links(message)
-        # Convert the GPT response to speech
-        text_to_speech(message_without_links)
-        text_to_speech(message_without_links)
-
-        # Return the response as JSON to the frontend, including the audio file URL
-        return jsonify({'response': message, 'audio_url': '/static/speech/output.mp3'})
-
-    except Exception as e:
-        # Print the error for debugging purposes
-        print(f"Error: {e}")
-        return jsonify({'error': str(e)}), 500
+        except Exception as e:
+            # Print the error for debugging purposes
+            print(f"Error: {e}")
+            return jsonify({'error': str(e)}), 500
     
     
     
