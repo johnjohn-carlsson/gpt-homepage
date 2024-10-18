@@ -69,13 +69,14 @@ def get_response():
     current_usage = redis_client.get(redis_key)
 
     if current_usage:
-        current_usage = int(current_usage)
-        if current_usage >= MAX_REQUESTS:
+        redis_client.incr(redis_key)
+        current_usage = int(current_usage) + 1
+        if current_usage > MAX_REQUESTS:
             max_reached = True
             return jsonify({'response': "That's enough questions for today, my friend. This ain't free you know. Come back tomorrow!", 'audio_url': '/static/defaults/speech_max_limit.mp3'}), 429
     else:
         # First request from this IP; set it to 1 and expire after 24 hours
-        redis_client.set(redis_key, 1, ex=EXPIRY_TIME)
+        redis_client.set(redis_key, 1, ex=int(EXPIRY_TIME.total_seconds()))
 
     if not max_reached:
         try:
