@@ -56,29 +56,30 @@ def simplify_links(text):
     simplified_text = re.sub(r'https?://[^\s\]]+', simplify_match, text)
     return simplified_text
 
-# Route to handle user input and get a response from GPT model
 @app.route('/get_response', methods=['POST'])
 def get_response():
     max_reached = False
     user_input = request.form['user_input']
-
     user_ip = request.remote_addr  # Get the user's IP address
 
+    # Generate a Redis key specific to the user's IP
+    redis_key = f"rate_limit:{user_ip}"
+
     # Check if the user has exceeded the request limit
-    current_usage = redis_client.get(user_ip)
+    current_usage = redis_client.get(redis_key)
 
     if current_usage:
         current_usage = int(current_usage)
         if current_usage >= MAX_REQUESTS:
             max_reached = True
-            return jsonify({'response': "That's enough questions for today, my friend. This ain't free you know. Come back tomorrow!", 'audio_url':'/static/defaults/speech_max_limit.mp3'}), 429
+            return jsonify({'response': "That's enough questions for today, my friend. This ain't free you know. Come back tomorrow!", 'audio_url': '/static/defaults/speech_max_limit.mp3'}), 429
     else:
         # First request from this IP; set it to 1 and expire after 24 hours
-        redis_client.set(user_ip, 1, ex=EXPIRY_TIME)
+        redis_client.set(redis_key, 1, ex=EXPIRY_TIME)
 
     if not max_reached:
         try:
-            redis_client.incr(user_ip)
+            redis_client.incr(redis_key)
 
             completion = client.chat.completions.create(
                 model="gpt-4o-mini",
