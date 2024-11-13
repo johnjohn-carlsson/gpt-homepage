@@ -75,7 +75,7 @@ window.onload = function() {
 };
 
 // Function to handle both typing effect and speech playback
-function typeResponseTextWithSpeech(responseText, audioUrl, speed = 50) {
+function typeResponseTextWithSpeech(responseText, audioUrl, speed = 70) {
     const responseDiv = document.getElementById('avatar-response');
     responseDiv.innerHTML = '';  // Clear previous content
 

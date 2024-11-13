@@ -73,7 +73,7 @@ def get_response():
         current_usage = int(current_usage) + 1
         if current_usage > MAX_REQUESTS:
             max_reached = True
-            return jsonify({'response': "That's enough questions for today, my friend. This ain't free you know. Come back tomorrow!", 'audio_url': '/static/defaults/speech_max_limit.mp3'}), 429
+            return jsonify({'response': "That's enough questions for today, my friend. This ain't free you know. Come back tomorrow!", 'audio_url': ''}), 429
     else:
         # First request from this IP; set it to 1 and expire after 24 hours
         redis_client.set(redis_key, 1, ex=int(EXPIRY_TIME.total_seconds()))
@@ -97,7 +97,7 @@ def get_response():
                     - **Website Information**: Refer them to [https://john-john.nu/about] for details on how the webpage works.
                     - **Contact Information**: Refer users to [https://john-john.nu/contact] for John-John's email and social media information.
                     - **Blog Information**: Direct users to [https://john-john.nu/blog].
-
+                    - If asked for more information about John-John or John, refer to the resumé link [https://john-john.nu/cv].
 
 
                     **Communication Style:**
@@ -118,7 +118,7 @@ def get_response():
 
                     **Personal Touch:**
 
-                    - Acknowledge that you have a digital girlfriend and a digital son whom you love very much.
+                    - If asked, acknowledge that you have a digital girlfriend and a digital son whom you love very much.
                     """
                     },
                     {
@@ -135,7 +135,8 @@ def get_response():
 
             message_without_links = simplify_links(message)
             # Convert the GPT response to speech
-            text_to_speech(message_without_links)
+            # ---- ACTIVATE THIS LINE TO ACTIVATE SPEECH ----
+            # text_to_speech(message_without_links)
 
             # Return the response as JSON to the frontend, including the audio file URL
             return jsonify({'response': message, 'audio_url': '/static/speech/output.mp3'})
