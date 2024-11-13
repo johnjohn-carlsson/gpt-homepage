@@ -44,6 +44,10 @@ def portfolio():
 def blog():
     return render_template('blog.html')
 
+@app.route('/gallery')
+def gallery():
+    return render_template('gallery.html')
+
 
 # Simplify links helper function
 def simplify_links(text):

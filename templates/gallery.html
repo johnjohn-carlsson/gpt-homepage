@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Playground</title>
+  <title>Gallery</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* Custom styles for disturbance video overlay */
@@ -19,7 +19,26 @@
   </style>
 </head>
 <body class="bg-gray-100">
-    
+  <div class="grid grid-cols-10 h-screen">
+    <!-- Left side for about information (70%) -->
+    <div class="col-span-7 bg-gray-800 flex flex-col items-start justify-start p-8">
+      <h1 class="text-4xl font-bold text-white mb-4">Gallery</h1>
+      <p class="text-lg leading-7 text-gray-400 mb-6">
+        Besides just being really passionate about creating things, I especially love to draw and paint. Below you will find some of my
+        works, done mostly with oil and acrylic paints on canvas. I wouldn't consider myself an artist - this page is mostly here to
+        let me gather my creations, both in code and on canvas, in one place. <br><br>
+
+        I do also have a habit of sometimes doodling on other peoples creations, but I'll try to leave that content for 
+        <a href="https://www.instagram.com/fjaerderyttaren/" class="text-blue-500 hover:text-blue-700" target="_blank">Instagram</a>.
+      </p>
+
+      <img src="/static/images/alien.png" alt="">
+      <i>Disclosure pt 1</i>
+      <img src="/static/images/arg.png" alt="">
+      <i>Happy Place</i>
+      <img src="/static/images/joker.png" alt="">
+      <i>Live, Laugh, Lynch</i>
+    </div>
 
     <!-- Right side for avatar video (30%) -->
     <div class="col-span-3 relative bg-gray-900 flex flex-col items-center justify-start pt-16">
