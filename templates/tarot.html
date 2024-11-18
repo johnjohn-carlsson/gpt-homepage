@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secret Tarot Page</title>
+  <link rel="icon" type="image/x-icon" href="/static/images/headpic.png">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+      /* Adjust styles for table and buttons */
+      table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 20px 0;
+      }
+
+      th, td {
+          padding: 16px;
+          text-align: center;
+          border: 1px solid rgba(55, 65, 81, 0.8);
+          width: 33.33%;
+      }
+
+      th {
+          background-color: rgba(31, 41, 55, 0.9);
+          color: white;
+      }
+
+      td {
+          background-color: rgba(55, 65, 81, 0.7);
+          color: white;
+      }
+
+      .cards_button {
+          display: block;
+          margin: 20px auto;
+          padding: 12px 24px;
+          background-color: rgba(75, 85, 99, 0.8);
+          color: white;
+          font-weight: bold;
+          border-radius: 8px;
+          transition: background-color 0.3s ease;
+      }
+
+      .cards_button:hover {
+          background-color: rgba(31, 41, 55, 0.8);
+      }
+
+      .card_img {
+          max-width: 300px;
+          display: block;
+          margin: auto; /* Centers the image horizontally */
+          border-radius: 8px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+  </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col justify-center items-center">
+
+    <section class="w-full bg-gray-800 bg-opacity-70 p-8 rounded-lg shadow-lg">
+        <form method="POST" action="/draw">
+            <table>
+                <tr>
+                    <th>DET FÖRFLUTNA</th>
+                    <th>NUTIDEN</th>
+                    <th>FRAMTIDEN</th>
+                </tr>
+                <tr>
+                    <td>
+                        Tidigare händelser som fortfarande påverkar dig.<br>
+                        Tidigare händelser som antingen håller dig tillbaka eller har potential att hjälpa dig.
+                    </td>
+                    <td>
+                        Din nuvarande situation.<br>
+                        Nuvarande utmaningar.
+                    </td>
+                    <td>
+                        Vilken riktning saker och ting rör sig i.<br>
+                        Resultatet av den nuvarande situationen.
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <img class="card_img" id="card-image-1" src="{{ card1_img }}" alt="Card Image 1">
+                    </th>
+                    <th>
+                        <img class="card_img" id="card-image-2" src="{{ card2_img }}" alt="Card Image 2">
+                    </th>
+                    <th>
+                        <img class="card_img" id="card-image-3" src="{{ card3_img }}" alt="Card Image 3">
+                    </th>
+                </tr>
+                {% if button_pressed %}
+                <tr>
+                    <th>{{ card1_title }}</th>
+                    <th>{{ card2_title }}</th>
+                    <th>{{ card3_title }}</th>
+                </tr>
+                <tr>
+                    <td>{{ card1_standing }}</td>
+                    <td>{{ card2_standing }}</td>
+                    <td>{{ card3_standing }}</td>
+                </tr>
+                <tr>
+                    <td>{{ card1_laying }}</td>
+                    <td>{{ card2_laying }}</td>
+                    <td>{{ card3_laying }}</td>
+                </tr>
+                {% endif %}
+            </table>
+            <div>
+                <button class="cards_button" type="submit">Draw New Cards</button>
+            </div>
+        </form>
+    </section>
+
+</body>
+</html>
