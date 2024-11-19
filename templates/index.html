@@ -63,6 +63,32 @@
         </div>
     </div>
 
+    <div class="fixed top-10 right-20 z-30">
+        <!-- Clickable image that triggers the functionality -->
+        <img id="daily-python-image" src="/static/images/daily_python.png" alt="Daily Python" style="max-width: 100px; cursor: pointer;">
+    </div>
+    
+    <!-- Hidden container for displaying the question and answer -->
+    <div id="daily-python-content" class="fixed top-24 right-20 z-30 hidden bg-gray-800 p-4 rounded-lg shadow-lg space-y-4">
+        <!-- Close button -->
+        <button id="close-content-button" class="absolute top-2 right-2 text-gray-400 hover:text-gray-100">
+            ✖
+        </button>
+        <!-- Textbox for displaying the question -->
+        <div id="question-container" class="bg-gray-700 text-white p-4 rounded-lg">
+            <span id="question-text"></span>
+        </div>
+        <!-- Button to reveal the answer -->
+        <button id="show-answer-button" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            Show Answer
+        </button>
+        <!-- Textbox for displaying the answer -->
+        <div id="answer-container" class="bg-gray-700 text-white p-4 rounded-lg hidden">
+            <span id="answer-text"></span>
+        </div>
+    </div>
+
+
     <!-- Input and Response box overlay on top of the video -->
     <div class="absolute inset-0 z-20 flex flex-col justify-end items-center p-8">
         <div class="w-full max-w-lg space-y-4">

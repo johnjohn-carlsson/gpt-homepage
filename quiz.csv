@@ -1,0 +1,26 @@
+type,question, option a, option b, option c, answer
+python beginner,What is the correct file extension for Python files?,.py,.python,.pyt,.py
+python beginner,How do you create a variable in Python?,let x = 10,x = 10,var x = 10,x = 10
+python beginner,Which function is used to output text to the screen?,echo(),display(),print(),print()
+python beginner,How do you write comments in Python?,# This is a comment,// This is a comment,/* This is a comment */,# This is a comment
+python beginner,What does len() function do?,Returns the type of a variable,Counts the number of items in an iterable,Adds items to a list,Counts the number of items in an iterable
+python beginner,What will 2**3 return?,6,8,9,8
+python beginner,Which of these is a correct Python data type?,string,text,char,string
+python beginner,What will the following code output? print(type(5)),<class 'int'>,<class 'float'>,<class 'string'>,<class 'int'>
+python intermediate,What does the strip() method do in Python?,Removes spaces from the middle of a string,Removes leading and trailing spaces,Converts a string to uppercase,Removes leading and trailing spaces
+python intermediate,How do you start a for loop in Python?,for i in range(10):,for (i=0; i<10; i++),foreach (i in range(10)),for i in range(10):
+python intermediate,Which method is used to add items to a list?,append(),add(),push(),append()
+python intermediate,How do you handle exceptions in Python?,if-else,try-except,catch-throw,try-except
+python intermediate,What does the join() method do in Python?,Combines strings with a specified separator,Joins two lists into one,Adds items to a set,Combines strings with a specified separator
+python intermediate,Which of these statements is true about Python sets?,They allow duplicate elements,They are unordered collections,They are immutable,They are unordered collections
+python intermediate,How can you copy a dictionary in Python?,copy(),dict.copy(),dict.copy() or copy(),dict.copy()
+python intermediate,Which operator checks if an element exists in a list?,=,in,contains,in
+python intermediate,What is the output of 3//2?,1,1.5,2,1
+python advanced,What does the @staticmethod decorator do?,Defines a static method that doesn't access instance or class variables,Defines a private method,Defines an abstract method,Defines a static method that doesn't access instance or class variables
+python advanced,Which of these is true about Python's GIL (Global Interpreter Lock)?,It improves multi-threaded performance,It allows only one thread to execute Python bytecode at a time,It is used in all programming languages,It allows only one thread to execute Python bytecode at a time
+python advanced,What is the purpose of yield in Python?,To return a value and stop the function permanently,To create a generator,To create an infinite loop,To create a generator
+python advanced,How does Python handle memory management?,Manual allocation and deallocation,Garbage collection with reference counting,Stack-based memory management,Garbage collection with reference counting
+python advanced,What is the purpose of the with statement in Python?,It is used to create loops,It simplifies exception handling by closing resources automatically,It creates classes dynamically,It simplifies exception handling by closing resources automatically
+python advanced,How can you check if a file exists in Python?,os.isfile(),os.path.isfile(),os.path.exists(),os.path.isfile()
+python advanced,What does the zip() function do?,Combines two iterables element-wise into tuples,Compresses a string,Sorts lists,Combines two iterables element-wise into tuples
+python advanced,Which of these is not a Python framework?,Flask,NumPy,Django,NumPy

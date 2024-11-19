@@ -1,0 +1,4 @@
+Question: What is the output of the following code: `print(type([]) is list)`?
+a) True
+b) False
+c) None

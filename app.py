@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, url_for
+from flask import Flask, render_template, request, jsonify
 from openai import OpenAI
 import requests
 import os
@@ -10,7 +10,6 @@ from tarotcards import drawMajor
 
 app = Flask(__name__)
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
 
 # Connect to Redis
 redis_url = os.getenv('REDIS_URL')
@@ -92,6 +91,44 @@ def process():
         card3_laying = card3_laying,
         card3_img = card3_img
         )
+
+def generate_daily_python_question():
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+                {
+            "role": "system",
+            "content": """
+                Generate a single Python-related multiple-choice question.
+                It is very important that your response follows the format below, without intro or outro.
+                The question should have:
+                - Three answer options.
+                - Only one correct answer.
+                Format:
+                Question: <question text>***a) <option 1>***b) <option 2>***c) <option 3>***Correct Answer: <a/b/c>
+                """
+            },
+            {
+                "role": "user",
+                "content": "Generate a new question please. Remember to stick to the format."
+            }
+        ]
+    )
+
+    message = completion.choices[0].message.content
+    
+    message_parts = message.split("***")
+    question_and_options = message_parts[:-1]
+    question_and_options = "\n".join(question_and_options)
+
+    answer = message_parts[-1]
+
+    with open("static/files/daily_question.txt", "w", encoding="utf-8") as f:
+        f.write(question_and_options)
+
+    with open("static/files/daily_answer.txt", "w", encoding="utf-8") as f:
+        f.write(answer)
+
 
 
 # Simplify links helper function

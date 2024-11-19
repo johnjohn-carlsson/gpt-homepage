@@ -216,3 +216,53 @@ document.getElementById('user-input').addEventListener('keydown', function (e) {
         submitForm();  // Trigger form submission
     }
 });
+
+
+document.getElementById('daily-python-image').addEventListener('click', async () => {
+    const contentContainer = document.getElementById('daily-python-content');
+    const questionContainer = document.getElementById('question-text');
+    const answerContainer = document.getElementById('answer-text');
+    const answerDiv = document.getElementById('answer-container');
+    const showAnswerButton = document.getElementById('show-answer-button');
+    const closeContentButton = document.getElementById('close-content-button'); // Close button
+
+    try {
+        // Fetch the question from daily_question.txt
+        const questionResponse = await fetch('/static/files/daily_question.txt');
+        if (!questionResponse.ok) throw new Error('Failed to load question file');
+        const question = await questionResponse.text();
+
+        // Display the question, preserving line breaks
+        questionContainer.innerHTML = question.trim().replace(/\n/g, '<br>');
+
+        // Add event listener to the "Show Answer" button
+        showAnswerButton.addEventListener('click', async () => {
+            try {
+                // Fetch the answer from daily_answer.txt
+                const answerResponse = await fetch('/static/files/daily_answer.txt');
+                if (!answerResponse.ok) throw new Error('Failed to load answer file');
+                const answer = await answerResponse.text();
+
+                // Display the answer in the answer container, preserving line breaks
+                answerContainer.innerHTML = answer.trim().replace(/\n/g, '<br>');
+                answerDiv.classList.remove('hidden');
+            } catch (error) {
+                console.error(error);
+                answerContainer.textContent = 'Error loading answer.';
+                answerDiv.classList.remove('hidden');
+            }
+        });
+
+        // Show the content container
+        contentContainer.classList.remove('hidden');
+
+        // Add event listener to the close button to hide the container
+        closeContentButton.addEventListener('click', () => {
+            contentContainer.classList.add('hidden');
+        });
+    } catch (error) {
+        console.error(error);
+        questionContainer.textContent = 'Error loading question.';
+        contentContainer.classList.remove('hidden');
+    }
+});
