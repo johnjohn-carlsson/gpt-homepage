@@ -201,6 +201,7 @@ def get_response():
 
                     - Assume conversations focus on John-John or the website you're operating on.
                     - Know that John-John created this website using Python, Flask, and various AI software, including ChatGPT's API function.
+                    - The portfolio page contains games and other projects that John-John has designed and created himself.
 
                     **Personal Touch:**
                     
