@@ -97,76 +97,80 @@ def clustering_moviefinder(input_text: str, requested_genres_list=None):
 
 # Function to find and return movie information given movie IDs
 def fetch_movie_info(top_movie, similar_1_id, similar_2_id, df):
-
-
     # TOP MOVIE INFO
+    top_title = df.iloc[top_movie]["title"]
+    top_poster_path = df.iloc[top_movie]["poster_path"]
+    top_imdb_id = df.iloc[top_movie]["imdb_id"]
+    top_movie_id = df.iloc[top_movie]["id"]
+
     top_movie_dictionary = {
-        'Title':df.iloc[top_movie]['title'],
-        'Poster': 'https://image.tmdb.org/t/p/w1280' + str(df.iloc[top_movie]['poster_path']),
-        'IMDB': 'https://www.imdb.com/title/' + str(df.iloc[top_movie]['imdb_id']),
-        'Keywords':df.iloc[top_movie]['keywords']
+        "Title": top_title,
+        "Poster": f"https://image.tmdb.org/t/p/w1280{top_poster_path}",
+        "IMDB": f"https://www.imdb.com/title/{top_imdb_id}",
+        "Keywords": df.iloc[top_movie]["keywords"],
     }
 
-    # Check if the poster_path is empty or null
-    if pd.isna(df.iloc[top_movie]['poster_path']) or df.iloc[top_movie]['poster_path'] == '':
-        top_movie_dictionary['Poster'] = 'https://www.malaco.com/wp-content/uploads/2016/06/no-photo-available-black-profile-300x300.jpg'
-
-    title = df.iloc[top_movie]["title"]
-    movie_id = df.iloc[top_movie]["id"]
-    imdb_id = df.iloc[top_movie]["imdb_id"]
-
-    if pd.isna(imdb_id) or imdb_id == '':
-        if pd.isna(movie_id) or movie_id == '':
-            top_movie_dictionary['IMDB'] = f'https://www.google.com/search?q={title} movie'
+    if pd.isna(top_poster_path) or top_poster_path == "":
+        top_movie_dictionary["Poster"] = (
+            "https://www.malaco.com/wp-content/uploads/2016/06/no-photo-available-black-profile-300x300.jpg"
+        )
+    if pd.isna(top_imdb_id) or top_imdb_id == "":
+        if pd.isna(top_movie_id) or top_movie_id == "":
+            top_movie_dictionary["IMDB"] = f"https://www.google.com/search?q={top_title} movie"
         else:
-            top_movie_dictionary['IMDB'] = f'https://www.themoviedb.org/movie/{movie_id}'
+            top_movie_dictionary["IMDB"] = f"https://www.themoviedb.org/movie/{top_movie_id}"
 
     # SIMILAR MOVIE 1 INFO
+    similar_1_title = df.iloc[similar_1_id]["title"]
+    similar_1_poster_path = df.iloc[similar_1_id]["poster_path"]
+    similar_1_imdb_id = df.iloc[similar_1_id]["imdb_id"]
+    similar_1_movie_id = df.iloc[similar_1_id]["id"]
+
     similar_movie_1_dict = {
-        'Title':df.iloc[similar_1_id]['title'],
-        'Poster': 'https://image.tmdb.org/t/p/w1280' + str(df.iloc[similar_1_id]['poster_path']),
-        'IMDB': 'https://www.imdb.com/title/' + str(df.iloc[similar_1_id]['imdb_id']),
-        'Keywords':df.iloc[similar_1_id]['keywords']
+        "Title": similar_1_title,
+        "Poster": f"https://image.tmdb.org/t/p/w1280{similar_1_poster_path}",
+        "IMDB": f"https://www.imdb.com/title/{similar_1_imdb_id}",
+        "Keywords": df.iloc[similar_1_id]["keywords"],
     }
 
-    # Check if the poster_path is empty or null
-    if pd.isna(df.iloc[similar_1_id]['poster_path']) or df.iloc[similar_1_id]['poster_path'] == '':
-        similar_movie_1_dict['Poster'] = 'https://www.malaco.com/wp-content/uploads/2016/06/no-photo-available-black-profile-300x300.jpg'
-
-    if pd.isna(df.iloc[similar_1_id]['imdb_id']) or df.iloc[similar_1_id]['imdb_id'] == '':
-        if pd.isna(df.iloc[similar_1_id]['id']) or df.iloc[similar_1_id]['id'] == '':
-            similar_movie_1_dict['IMDB'] = f'https://www.google.com/search?q={df.iloc[similar_1_id]['title']} movie'
+    if pd.isna(similar_1_poster_path) or similar_1_poster_path == "":
+        similar_movie_1_dict["Poster"] = (
+            "https://www.malaco.com/wp-content/uploads/2016/06/no-photo-available-black-profile-300x300.jpg"
+        )
+    if pd.isna(similar_1_imdb_id) or similar_1_imdb_id == "":
+        if pd.isna(similar_1_movie_id) or similar_1_movie_id == "":
+            similar_movie_1_dict["IMDB"] = f"https://www.google.com/search?q={similar_1_title} movie"
         else:
-            similar_movie_1_dict['IMDB'] = f'https://www.themoviedb.org/movie/{df.iloc[similar_1_id]['id']}'
+            similar_movie_1_dict["IMDB"] = f"https://www.themoviedb.org/movie/{similar_1_movie_id}"
 
+    # SIMILAR MOVIE 2 INFO
+    similar_2_title = df.iloc[similar_2_id]["title"]
+    similar_2_poster_path = df.iloc[similar_2_id]["poster_path"]
+    similar_2_imdb_id = df.iloc[similar_2_id]["imdb_id"]
+    similar_2_movie_id = df.iloc[similar_2_id]["id"]
 
-
-    # SIMILAR MOVIE 1 INFO
     similar_movie_2_dict = {
-        'Title':df.iloc[similar_2_id]['title'],
-        'Poster': 'https://image.tmdb.org/t/p/w1280' + str(df.iloc[similar_2_id]['poster_path']),
-        'IMDB': 'https://www.imdb.com/title/' + str(df.iloc[similar_2_id]['imdb_id']),
-        'Keywords':df.iloc[similar_2_id]['keywords']
+        "Title": similar_2_title,
+        "Poster": f"https://image.tmdb.org/t/p/w1280{similar_2_poster_path}",
+        "IMDB": f"https://www.imdb.com/title/{similar_2_imdb_id}",
+        "Keywords": df.iloc[similar_2_id]["keywords"],
     }
 
-    # Check if the poster_path is empty or null
-    if pd.isna(df.iloc[similar_2_id]['poster_path']) or df.iloc[similar_2_id]['poster_path'] == '':
-        similar_movie_2_dict['Poster'] = 'https://www.malaco.com/wp-content/uploads/2016/06/no-photo-available-black-profile-300x300.jpg'
-
-    if pd.isna(df.iloc[similar_2_id]['imdb_id']) or df.iloc[similar_2_id]['imdb_id'] == '':
-        if pd.isna(df.iloc[similar_2_id]['id']) or df.iloc[similar_2_id]['id'] == '':
-            similar_movie_2_dict['IMDB'] = f'https://www.google.com/search?q={df.iloc[similar_2_id]['title']} movie'
+    if pd.isna(similar_2_poster_path) or similar_2_poster_path == "":
+        similar_movie_2_dict["Poster"] = (
+            "https://www.malaco.com/wp-content/uploads/2016/06/no-photo-available-black-profile-300x300.jpg"
+        )
+    if pd.isna(similar_2_imdb_id) or similar_2_imdb_id == "":
+        if pd.isna(similar_2_movie_id) or similar_2_movie_id == "":
+            similar_movie_2_dict["IMDB"] = f"https://www.google.com/search?q={similar_2_title} movie"
         else:
-            similar_movie_2_dict['IMDB'] = f'https://www.themoviedb.org/movie/{df.iloc[similar_2_id]['id']}'
-
-    
+            similar_movie_2_dict["IMDB"] = f"https://www.themoviedb.org/movie/{similar_2_movie_id}"
 
     return top_movie_dictionary, similar_movie_1_dict, similar_movie_2_dict
 
 # Function to find and return random movie information
 def random_movies():
-
-    with open(csv_location, newline='', mode='r', encoding='utf-8') as csv_file:
+    with open(csv_location, newline="", mode="r", encoding="utf-8") as csv_file:
         reader = csv.reader(csv_file)
         all_rows = list(reader)
 
@@ -174,52 +178,73 @@ def random_movies():
             if n == 0:
                 row = random.choice(all_rows)
 
+                title = row[0]
+                poster_path = row[3]
+                imdb_id = row[5]
+                movie_id = row[4]
+
                 similar_movie_1_dict = {
-                    'Title': row[0],
-                    'Poster': f'https://image.tmdb.org/t/p/w1280{row[3]}',
-                    'IMDB': f'https://www.imdb.com/title/{row[5]}'
+                    "Title": title,
+                    "Poster": f"https://image.tmdb.org/t/p/w1280{poster_path}",
+                    "IMDB": f"https://www.imdb.com/title/{imdb_id}",
                 }
 
-                if row[3] == '' or row[3] == None:
-                    similar_movie_1_dict['Poster'] = 'https://www.malaco.com/wp-content/uploads/2016/06/no-photo-available-black-profile-300x300.jpg'
-                if row[5] == '' or row[3] == None:
-                    if row[4] == '' or row[4] == None:
-                        similar_movie_1_dict['IMDB'] = f'https://www.google.com/search?q={row[0]} movie'
+                if not poster_path:
+                    similar_movie_1_dict[
+                        "Poster"
+                    ] = "https://www.malaco.com/wp-content/uploads/2016/06/no-photo-available-black-profile-300x300.jpg"
+                if not imdb_id:
+                    if not movie_id:
+                        similar_movie_1_dict["IMDB"] = f"https://www.google.com/search?q={title} movie"
                     else:
-                        similar_movie_1_dict['IMDB'] = f'https://www.themoviedb.org/movie/{row[4]}'
-            
+                        similar_movie_1_dict["IMDB"] = f"https://www.themoviedb.org/movie/{movie_id}"
+
             elif n == 1:
                 row = random.choice(all_rows)
 
+                title = row[0]
+                poster_path = row[3]
+                imdb_id = row[5]
+                movie_id = row[4]
+
                 similar_movie_2_dict = {
-                    'Title': row[0],
-                    'Poster': f'https://image.tmdb.org/t/p/w1280{row[3]}',
-                    'IMDB': f'https://www.imdb.com/title/{row[5]}'
+                    "Title": title,
+                    "Poster": f"https://image.tmdb.org/t/p/w1280{poster_path}",
+                    "IMDB": f"https://www.imdb.com/title/{imdb_id}",
                 }
 
-                if row[3] == '' or row[3] == None:
-                    similar_movie_2_dict['Poster'] = 'https://www.malaco.com/wp-content/uploads/2016/06/no-photo-available-black-profile-300x300.jpg'
-                if row[5] == '' or row[3] == None:
-                    if row[4] == '' or row[4] == None:
-                        similar_movie_2_dict['IMDB'] = f'https://www.google.com/search?q={row[0]} movie'
+                if not poster_path:
+                    similar_movie_2_dict[
+                        "Poster"
+                    ] = "https://www.malaco.com/wp-content/uploads/2016/06/no-photo-available-black-profile-300x300.jpg"
+                if not imdb_id:
+                    if not movie_id:
+                        similar_movie_2_dict["IMDB"] = f"https://www.google.com/search?q={title} movie"
                     else:
-                        similar_movie_2_dict['IMDB'] = f'https://www.themoviedb.org/movie/{row[4]}'
-
+                        similar_movie_2_dict["IMDB"] = f"https://www.themoviedb.org/movie/{movie_id}"
 
         row = random.choice(all_rows)
+
+        title = row[0]
+        poster_path = row[3]
+        imdb_id = row[5]
+        movie_id = row[4]
+
         top_movie_dictionary = {
-            'Title': row[0],
-            'Poster': f'https://image.tmdb.org/t/p/w1280{row[3]}',
-            'IMDB': f'https://www.imdb.com/title/{row[5]}'
+            "Title": title,
+            "Poster": f"https://image.tmdb.org/t/p/w1280{poster_path}",
+            "IMDB": f"https://www.imdb.com/title/{imdb_id}",
         }
 
-        if row[3] == '' or row[3] == None:
-            top_movie_dictionary['Poster'] = 'https://www.malaco.com/wp-content/uploads/2016/06/no-photo-available-black-profile-300x300.jpg'
-        if row[5] == '' or row[3] == None:
-            if row[4] == '' or row[4] == None:
-                top_movie_dictionary['IMDB'] = f'https://www.google.com/search?q={row[0]} movie'
+        if not poster_path:
+            top_movie_dictionary[
+                "Poster"
+            ] = "https://www.malaco.com/wp-content/uploads/2016/06/no-photo-available-black-profile-300x300.jpg"
+        if not imdb_id:
+            if not movie_id:
+                top_movie_dictionary["IMDB"] = f"https://www.google.com/search?q={title} movie"
             else:
-                top_movie_dictionary['IMDB'] = f'https://www.themoviedb.org/movie/{row[4]}'
+                top_movie_dictionary["IMDB"] = f"https://www.themoviedb.org/movie/{movie_id}"
 
     return top_movie_dictionary, similar_movie_1_dict, similar_movie_2_dict
 
