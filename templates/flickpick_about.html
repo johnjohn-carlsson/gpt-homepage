@@ -1,0 +1,91 @@
+{% extends "flickpick_basetemplate.html" %}
+
+
+{% block content %}
+
+<section id="banner" style="padding-top: 6em;">
+    <p>
+        FlickPick is made possible by Staffan, Mohammad, Casper & John-John
+    </p>
+    <h3 id="how-does-it-work" style="cursor: pointer; color: #e89980;">How Does It Work Technically?</h3>
+    <p id="description" style="display: none;">
+        Moviematching powered by machine learning!<br>
+        The user input is converted from a text into a number called a vector,
+        using something appropriately called a <a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html" target="_blank"><i>vectorizer</i></a>. <br>
+        Something similar is then done to the plotline and/or keywords of every movie in our database, <br>
+        and using a type of machinelearning called <a href="https://scikit-learn.org/stable/modules/neighbors.html" target="_blank"><i>Nearest Neighbors</i></a>, FlickPick compares the <br>
+        input <i>vector</i> to each movies' <i>vector</i> and finds the closest matches, or <i>nearest neighbors</i>.
+        <br><br>
+        Et voilà!<br>
+        We have our matches.
+    </p>
+    <h3 id="how-many-movies" style="cursor: pointer; color: #e89980;">What Movies You Do Have?</h3>
+    <p id="movies-description" style="display: none;">
+        Currently we have around 250'000 movies in our database, <br>
+        our database is based on a wide selection of movies found on <a href="https://www.themoviedb.org/">themoviedb.org</a>.<br>
+        Ranging from obscure picks like the Soviet musical <a href="https://www.themoviedb.org/movie/662689">Снежная свадьба</a>
+        to box-office hits like <a href="https://www.themoviedb.org/movie/19995-avatar">Avatar</a><br>
+        you can be sure to find something new to watch every time!
+    </p>
+    <h3 id="contact-us" style="cursor: pointer; color: #e89980;">Contact Us</h3>
+    <p id="contact-info" style="display: none;">
+        flickpick.admin@protonmail.com
+    </p>
+</section>
+
+<script>
+    document.getElementById('how-does-it-work').addEventListener('click', function() {
+        var description = document.getElementById('description');
+        var moviesDescription = document.getElementById('movies-description');
+        var contactDescription = document.getElementById('contact-info');
+
+        // Hide the other section
+        moviesDescription.style.display = 'none';
+        contactDescription.style.display = 'none';
+
+        // Toggle the current section
+        if (description.style.display === 'none' || description.style.display === '') {
+            description.style.display = 'block';
+        } else {
+            description.style.display = 'none';
+        }
+    });
+
+    document.getElementById('how-many-movies').addEventListener('click', function() {
+        var description = document.getElementById('movies-description');
+        var howItWorksDescription = document.getElementById('description');
+        var contactDescription = document.getElementById('contact-info');
+
+        // Hide the other section
+        howItWorksDescription.style.display = 'none';
+        contactDescription.style.display = 'none';
+
+        // Toggle the current section
+        if (description.style.display === 'none' || description.style.display === '') {
+            description.style.display = 'block';
+        } else {
+            description.style.display = 'none';
+        }
+    });
+
+    document.getElementById('contact-us').addEventListener('click', function() {
+        var description = document.getElementById('movies-description');
+        var howItWorksDescription = document.getElementById('description');
+        var contactDescription = document.getElementById('contact-info');
+
+        // Hide the other section
+        howItWorksDescription.style.display = 'none';
+        description.style.display = 'none';
+
+        // Toggle the current section
+        if (contactDescription.style.display === 'none' || contactDescription.style.display === '') {
+            contactDescription.style.display = 'block';
+        } else {
+            contactDescription.style.display = 'none';
+        }
+    });
+</script>
+
+
+{% endblock %}
+

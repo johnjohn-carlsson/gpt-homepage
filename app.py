@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from openai import OpenAI
 import requests
 import os
@@ -6,14 +6,16 @@ import re
 import redis
 from datetime import timedelta
 from tarotcards import drawMajor
+from flickpick_utilities import clustering_moviefinder, fetch_movie_info, random_movies, find_keywords_using_movie, MovieSearchForm, input_cleaner
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = "superfuckingsecret"
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Connect to Redis
-redis_url = os.getenv('REDIS_URL')
-redis_client = redis.Redis.from_url(redis_url)
+# redis_url = os.getenv('REDIS_URL')
+# redis_client = redis.Redis.from_url(redis_url)
 
 # Maximum requests allowed per IP per day
 MAX_REQUESTS = 6
@@ -47,6 +49,82 @@ def blog():
 @app.route('/gallery')
 def gallery():
     return render_template('gallery.html')
+
+@app.route('/flickpick_about')
+def flickpick_about():
+    return render_template(
+        "flickpick_about.html"
+        )
+
+@app.route('/flickpick_home')
+def flickpick_home():
+    return render_template('flickpick_home.html')
+
+@app.route('/flickpick_result')
+def flickpick_result():
+    action = request.args.get('action', '')
+    user_input = None # Incase you chose random movies and there is no user input we need to define it
+    title_search = ''
+
+    # If 'Random' button is pressed, generate random movies
+    if action == 'random':
+        top_pick_dictionary, similar_movie_1_dict, similar_movie_2_dict = random_movies()
+
+    # Otherwise you were redirected here from the 'Search' page, so we use the 'user_input' information
+    else:
+        selected_genres = request.args.getlist('selected_genres')
+        user_input = request.args.get('user_input', '')
+        
+        if selected_genres and selected_genres[0] == 'Find Similar Titles':
+            keywords = find_keywords_using_movie(user_input)
+        else:
+            keywords = user_input
+            
+        top_match_id, similar_movie_1_id, similar_movie_2_id, df = clustering_moviefinder(keywords, selected_genres)
+        
+        top_pick_dictionary, similar_movie_1_dict, similar_movie_2_dict = fetch_movie_info(top_match_id, similar_movie_1_id, similar_movie_2_id, df)
+
+    # Very clunky and repeating way of assigning variable information
+    top_title = top_pick_dictionary['Title'].title()
+    top_image = top_pick_dictionary['Poster']
+    top_imdb = top_pick_dictionary['IMDB']
+
+    similar1_title = similar_movie_1_dict['Title'].title()
+    similar1_image = similar_movie_1_dict['Poster']
+    similar1_imdb = similar_movie_1_dict['IMDB']
+
+    similar2_title = similar_movie_2_dict['Title'].title()
+    similar2_image = similar_movie_2_dict['Poster']
+    similar2_imdb = similar_movie_2_dict['IMDB']
+
+    return render_template(
+        "flickpick_result.html",
+        top_title = top_title,
+        top_image = top_image,
+        top_imdb = top_imdb,
+        similar1_title = similar1_title,
+        similar1_image = similar1_image,
+        similar1_imdb = similar1_imdb,
+        similar2_title = similar2_title,
+        similar2_image = similar2_image,
+        similar2_imdb = similar2_imdb,
+        user_input=user_input
+        )
+
+@app.route('/flickpick_search', methods=['GET', 'POST'])
+def flickpick_search():
+    movieform = MovieSearchForm()
+
+    if movieform.validate_on_submit():
+        # Fetch and clean up input from input boxes
+        user_input = input_cleaner(movieform.freeform_text_input.data)
+
+        selected_genres = [field.label.text for field in movieform if field.type == 'BooleanField' and field.data]
+ 
+        # Redirect to result page to match input with movies
+        return redirect(url_for('flickpick_result', user_input=user_input, selected_genres=selected_genres))
+
+    return render_template("flickpick_search.html", movieform=movieform)
 
 @app.route('/tarot')
 def tarot():

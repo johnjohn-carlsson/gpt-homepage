@@ -1,0 +1,111 @@
+div#radio ul li {
+    list-style: none;
+    margin: 0 0 2em 0;
+    padding-left: 1em;
+    display: inline;
+}
+
+.genres {
+	/*border: 1px solid #e5e5e5;*/
+    list-style: none;
+    margin: 2px 2px 2px 2px;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+input[type="checkbox"],
+	input[type="radio"] {
+		-moz-appearance: none;
+		-webkit-appearance: none;
+		-ms-appearance: none;
+		appearance: none;
+		display: inline;
+		float: left;
+		margin-right: -2em;
+		opacity: 0;
+		width: 1em;
+		z-index: -1;
+	}
+
+		input[type="checkbox"] + label,
+		input[type="radio"] + label {
+			text-decoration: none;
+			color: #777;
+			cursor: pointer;
+			display: inline-block;
+			font-size: 1em;
+			font-weight: 300;
+			padding-left: 1.00em;
+			padding-right: 0.75em;
+			position: relative;
+		}
+
+			input[type="checkbox"] + label:before,
+			input[type="radio"] + label:before {
+				-moz-osx-font-smoothing: grayscale;
+				-webkit-font-smoothing: antialiased;
+				display: inline-block;
+				font-style: normal;
+				font-variant: normal;
+				text-rendering: auto;
+				line-height: 1;
+				text-transform: none !important;
+				font-family: 'Font Awesome 5 Free';
+				font-weight: 900;
+			}
+
+			input[type="checkbox"] + label:before
+			{
+				background: #f8f8f8;
+                border-radius: 0;
+                border: solid 0px #e5e5e5;
+                content: '';
+                display: inline-block;
+                font-size: 0.8em;
+                height: 0.8em;
+                left: 0;
+                line-height: 2.25em;
+                position: absolute;
+                text-align: center;
+                top: 5px;
+                width: 0.8em;
+			}
+			input[type="radio"] + label:before {
+				background: #f8f8f8;
+                border-radius: 100%;
+                border: solid 0px #e5e5e5;
+                content: '';
+                display: inline-block;
+                font-size: 0.8em;
+                height: 0.8em;
+                left: 0;
+                line-height: 2.25em;
+                position: absolute;
+                text-align: center;
+                top: 5px;
+                width: 0.8em;
+			}
+
+		input[type="checkbox"]:checked + label:before,
+		input[type="radio"]:checked + label:before {
+			background: #831c20;
+            border-color: #000000;
+            color: #ffffff;
+            content: '';
+            height: 0.6em;
+            width: 0.6em;
+		}
+
+		input[type="checkbox"]:focus + label:before,
+		input[type="radio"]:focus + label:before {
+			border-color: #e89980;
+			box-shadow: 0 0 0 1px #e89980;
+		}
+
+	input[type="checkbox"] + label:before {
+		border-radius: 0px;
+	}
+
+	input[type="radio"] + label:before {
+		border-radius: 100%;
+	}

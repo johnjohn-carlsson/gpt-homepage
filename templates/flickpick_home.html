@@ -1,0 +1,16 @@
+{% extends "flickpick_basetemplate.html" %}
+
+
+{% block content %}
+ 
+    <!-- Main content (originally banner) -->
+        <section id="banner">
+            <h2>FlickPick</h2>
+            <p>We pick your flick so you can focus on flicking eachothers pricks.</p>
+            <ul class="actions special">
+                <li><a href="{{ url_for('flickpick_search')}}" class="button primary">Search</a></li>
+                <li><a href="{{ url_for('flickpick_result', action='random') }}" class="button">Random</a></li>
+            </ul>
+        </section>  
+
+{% endblock %}

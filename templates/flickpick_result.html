@@ -1,0 +1,43 @@
+{% extends "flickpick_basetemplate.html" %}
+
+{% block content %}
+    <!-- Main content (originally banner) -->
+    <section id="banner" style="padding-top: 4em;">
+        <div class="picks-container">
+            <!-- Similar movie left -->
+            <section class="similar-pick-section">
+                <h3>Alternative 1</h3>
+                <img src="{{ similar1_image }}" alt="" class="pick-image"> <br>
+                {{ similar1_title }} <br>
+                {% if similar1_imdb %}
+                <a href="{{ similar1_imdb }}" target="_blank">Movie Info</a>
+                {% endif %}
+            </section>
+
+            <!-- Top pick -->
+            <section class="top-pick-section">
+                <h3>Top Pick</h3>
+                <img src="{{ top_image }}" alt="" class="pick-image top-pick-image"> <br>
+                {{ top_title }} <br>
+                {% if top_imdb %}
+                <a href="{{ top_imdb }}" target="_blank">Movie Info</a>
+                {% endif %}
+            </section>
+
+            <!-- Similar movie right -->
+            <section class="similar-pick-section">
+                <h3>Alternative 2</h3>
+                <img src="{{ similar2_image }}" alt="" class="pick-image"> <br>
+                {{ similar2_title }} <br>
+                {% if similar2_imdb %}
+                <a href="{{ similar2_imdb }}" target="_blank">Movie Info</a>
+                {% endif %}
+            </section>
+        </div>
+
+        <ul class="actions special" style="margin-top: 2em;">
+            <li><a href="{{ url_for('flickpick_search') }}" class="button primary">Search</a></li>
+            <li><a href="{{ url_for('flickpick_result', action='random') }}" class="button">Random</a></li>
+        </ul>
+    </section>
+{% endblock %}

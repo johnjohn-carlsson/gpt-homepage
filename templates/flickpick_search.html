@@ -1,0 +1,41 @@
+{% extends "flickpick_basetemplate.html" %}
+
+{% block content %}
+<section id="banner">
+    <form method="POST">
+        {{ movieform.hidden_tag() }}
+        <div>
+            {{ movieform.freeform_text_input.label }}
+            <textarea name="{{ movieform.freeform_text_input.name }}">{{ movieform.freeform_text_input._value() }}</textarea>
+        </div>
+        <div>
+            <h3 id="filters-btn" style="cursor: pointer; color: #e89980;">Filters</h3>
+            <div id="description" style="display: none;">
+               
+                <ul class="genres">
+                    {% for field in movieform if field.type == 'BooleanField' %}
+                    <li class="genres">
+                        {{ field() }} {{ field.label }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div>
+            {{ movieform.submit() }}
+        </div>
+    </form>
+</section>
+
+<script>
+    document.getElementById('filters-btn').addEventListener('click', function() {
+        var description = document.getElementById('description');
+        // Toggle the current section
+        if (description.style.display === 'none' || description.style.display === '') {
+            description.style.display = 'block';
+        } else {
+            description.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}
