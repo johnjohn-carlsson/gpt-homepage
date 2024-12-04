@@ -113,9 +113,9 @@ def fetch_movie_info(top_movie, similar_1_id, similar_2_id, df):
 
     if pd.isna(df.iloc[top_movie]['imdb_id']) or df.iloc[top_movie]['imdb_id'] == '':
         if pd.isna(df.iloc[top_movie]['id']) or df.iloc[top_movie]['id'] == '':
-            top_movie_dictionary['IMDB'] = f'https://www.google.com/search?q={df.iloc[top_movie]['title']} movie'
+            top_movie_dictionary['IMDB'] = f'https://www.google.com/search?q={df.iloc[top_movie]["title"]} movie'
         else:
-            top_movie_dictionary['IMDB'] = f'https://www.themoviedb.org/movie/{df.iloc[top_movie]['id']}'
+            top_movie_dictionary['IMDB'] = f'https://www.themoviedb.org/movie/{df.iloc[top_movie]["id"]}'
 
     # SIMILAR MOVIE 1 INFO
     similar_movie_1_dict = {

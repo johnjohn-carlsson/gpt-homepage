@@ -14,8 +14,8 @@ app.config['SECRET_KEY'] = "superfuckingsecret"
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Connect to Redis
-# redis_url = os.getenv('REDIS_URL')
-# redis_client = redis.Redis.from_url(redis_url)
+redis_url = os.getenv('REDIS_URL')
+redis_client = redis.Redis.from_url(redis_url)
 
 # Maximum requests allowed per IP per day
 MAX_REQUESTS = 6
