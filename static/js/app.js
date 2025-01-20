@@ -107,7 +107,6 @@ function typeResponseTextWithSpeech(responseText, audioUrl, speed = 70) {
                 if (currentCharIndex === 0) {
                     const link = document.createElement('a');
                     link.href = part.url;
-                    link.target = '_blank';
                     link.textContent = part.displayText; // Display the link text
                     link.style.color = '#0000EE';  // Optional: link color
                     link.style.textDecoration = 'underline';  // Optional: underline
