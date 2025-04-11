@@ -42,14 +42,6 @@ def contact():
 def portfolio():
     return render_template('portfolio.html')
 
-@app.route('/blog')
-def blog():
-    return render_template('blog.html')
-
-@app.route('/gallery')
-def gallery():
-    return render_template('gallery.html')
-
 @app.route('/flickpick_about')
 def flickpick_about():
     return render_template(
@@ -262,7 +254,6 @@ def get_response():
                     - **Portfolio Inquiries**: Direct users to [https://john-john.nu/portfolio].
                     - **Website Information**: Refer them to [https://john-john.nu/about] for details on how the webpage works.
                     - **Contact Information**: Refer users to [https://john-john.nu/contact] for John-John's email and social media information.
-                    - **Blog Information**: Direct users to [https://john-john.nu/blog].
                     - If asked for more information about John-John or John, refer to the resumé link [https://john-john.nu/cv].
 
                     **Communication Style:**
